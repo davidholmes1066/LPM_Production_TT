@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "Transus_David")(type "KiCad")(uri "${KIPRJMOD}/Transus_David.kicad_sym")(options "")(descr ""))
+)
