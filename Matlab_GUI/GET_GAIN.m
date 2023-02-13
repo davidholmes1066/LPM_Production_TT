@@ -1,45 +1,47 @@
-function [GAIN_AVR] = GET_GAIN(device,cycles)
+function [GAIN] = GET_GAIN(device,cycles)
 %gets the avrage GAIN
-
-%allocate for speed
-Gain1 = zeros(1,cycles);
-Gain2 = zeros(1,cycles);
-Gain3 = zeros(1,cycles);
-Gain4 = zeros(1,cycles);
-
 %biderectional gain read
 for i = 1:cycles
 GAINAB = read(device,'holdingregs',2010+1,4,1,'uint16'); %GAIN AB
-GAINBA = read(device,'holdingregs',2014+1,4,1,'uint16'); %SNR BA
+GAINBA = read(device,'holdingregs',2014+1,4,1,'uint16'); %GAIN BA
 
-Gain1(i) = (GAINAB(1) + GAINBA(1))/2;
-Gain2(i) = (GAINAB(2) + GAINBA(2))/2;
-Gain3(i) = (GAINAB(3) + GAINBA(3))/2;
-Gain4(i) = (GAINAB(4) + GAINBA(4))/2;
+AB1(i) = GAINAB(1);
+BA1(i) = GAINBA(1);
+AB2(i) = GAINAB(2);
+BA2(i) = GAINBA(2);
+AB3(i) = GAINAB(3);
+BA3(i) = GAINBA(3);
+AB4(i) = GAINAB(4);
+BA4(i) = GAINBA(4);
 end
 
 
-%calculate avrage gain
-GAIN_AVR1 = 0;
-GAIN_AVR2 = 0;
-GAIN_AVR3 = 0;
-GAIN_AVR4 = 0;
+AB1_AVR = 0;
+BA1_AVR = 0;
+AB2_AVR = 0;
+BA2_AVR = 0;
+AB3_AVR = 0;
+BA3_AVR = 0;
+AB4_AVR = 0;
+BA4_AVR = 0;
 
-for k = 1:cycles
-    GAIN_AVR1 = GAIN_AVR1 + Gain1(k);
-    GAIN_AVR2 = GAIN_AVR2 + Gain2(k);
-    GAIN_AVR3 = GAIN_AVR3 + Gain3(k);
-    GAIN_AVR4 = GAIN_AVR4 + Gain4(k);
+for i = 1:cycles
+    AB1_AVR = AB1_AVR + AB1(i);
+    BA1_AVR = BA1_AVR + BA1(i);
+    AB2_AVR = AB2_AVR + AB2(i);
+    BA2_AVR = BA2_AVR + BA2(i);
+    AB3_AVR = AB3_AVR + AB3(i);
+    BA3_AVR = BA3_AVR + BA3(i);
+    AB4_AVR = AB4_AVR + AB4(i);
+    BA4_AVR = BA4_AVR + BA4(i);
 end
 
-GAIN_AVR1 = GAIN_AVR1/cycles;
-GAIN_AVR2 = GAIN_AVR2/cycles;
-GAIN_AVR3 = GAIN_AVR3/cycles;
-GAIN_AVR4 = GAIN_AVR4/cycles;
-
-%return 1 array
-GAIN_AVR(1) = GAIN_AVR1;
-GAIN_AVR(2) = GAIN_AVR2;
-GAIN_AVR(3) = GAIN_AVR3;
-GAIN_AVR(4) = GAIN_AVR4;
+    GAIN(1) = AB1_AVR/cycles;
+    GAIN(2) = BA1_AVR/cycles;
+    GAIN(3) = AB2_AVR/cycles;
+    GAIN(4) = BA2_AVR/cycles;
+    GAIN(5) = AB3_AVR/cycles;
+    GAIN(6) = BA3_AVR/cycles;
+    GAIN(7) = AB4_AVR/cycles;
+    GAIN(8) = BA4_AVR/cycles;
 end

@@ -1,0 +1,10 @@
+clearvars;
+
+xmega = serialport('COM10',115200);
+write(xmega, 30, "uint8");
+
+for i= 1:14
+   voltl(i) = read(xmega,2,"uint16");
+end
+
+

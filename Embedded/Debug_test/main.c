@@ -83,7 +83,22 @@ int main(void)
 				break;
 				
 			case(30):
-				write_volt();											//Reads voltages and converts them to two uint8_t data packages (14 packages total)
+				//write_volt();											//Reads voltages and converts them to two uint8_t data packages (14 packages total)
+				write8_UART(1);
+				TIMEOUT();
+				write8_UART(2);
+				TIMEOUT();
+				write8_UART(3);
+				TIMEOUT();
+				write8_UART(4);
+				TIMEOUT();
+				write8_UART(5);
+				TIMEOUT();
+				write8_UART(6);
+				TIMEOUT();
+				write8_UART(7);
+				TIMEOUT();
+				write8_UART(8);
 				//read_voltages();
 				break;
 				
