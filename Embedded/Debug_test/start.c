@@ -4,6 +4,7 @@
  * Created: 18/05/2022 12:26:41
  *  Author: david
  */ 
+
 #include <stdio.h>
 #include <stdio.h>
 #include "start.h"
@@ -14,8 +15,9 @@ void init_UART(void)
 	PORTE_DIRSET = PIN3_bm;												//Set TX pin USARTE0 E3 as output
 	PORTE_OUTSET = PIN3_bm;												//Set TX pin to high
 	
-	USARTE0.BAUDCTRLB |= (0x0D<<4);										//Set BSCALE to -3 for baud 115200
-	USARTE0.BAUDCTRLA |= (0x83);										//Set BSEL to 131 for baud 115200
+	USARTE0.BAUDCTRLB |= (0x09<<4);										//Set BSCALE to -7 for baud 115200
+	USARTE0.BAUDCTRLA |= (0x2E);										//Set BSEL to 2094 for baud 115200
+	USARTE0.BAUDCTRLB |= (0x08);										//Set BSel to 2094 for baud 115200
 	
 	USARTE0.CTRLC |= (0x03);											//Sets amount of data bits to 8
 	USARTE0.CTRLB |= (0x03<<3);											//Sets the Rx and TX enable bits.

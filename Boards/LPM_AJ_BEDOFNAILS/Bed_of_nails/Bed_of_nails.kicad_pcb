@@ -3020,7 +3020,7 @@
   (gr_text "DNM" (at 188.69 123.35) (layer "F.SilkS") (tstamp 59dd30a8-7726-40ff-bd2c-e4654b394252)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (gr_text "200-0090 TIP026AB LPM Production test - bed of nails board" (at 130.88 133.12) (layer "F.SilkS") (tstamp 651b585b-873a-47ed-9720-c04f2dd27ec3)
+  (gr_text "200-0090 TIP026AC LPM Production test - bed of nails board" (at 130.88 133.12) (layer "F.SilkS") (tstamp 651b585b-873a-47ed-9720-c04f2dd27ec3)
     (effects (font (size 1 1) (thickness 0.15)))
   )
 
