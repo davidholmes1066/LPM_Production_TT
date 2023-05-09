@@ -46,10 +46,9 @@ uint16_t read_supply_bat(void);
 void write_ext(void);
 void write_bat(void);
 void write_volt(void);
-void fread_D0(void);
-void write_D0(void);
-void write_D1(void);
+void fread_DO(void);
 void LPM_P_OFF(void);
+void writeF_UART(float data);
 
 
 

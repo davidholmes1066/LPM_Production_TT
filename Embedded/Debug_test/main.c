@@ -7,7 +7,6 @@
 
 #include <avr/io.h>
 #include <stdio.h>
-#include "serialF0.h"
 #include <avr/interrupt.h>
 #include <string.h>
 #include "start.h"
@@ -17,13 +16,10 @@
 #define F_CPU 32000000
 #endif
 
-#define DAC_VREF 1
-#define ADC_VREF 1
-
 int PTimeOut = 0;
 int TC_samples = 0;
 uint16_t PTime[6];
-int16_t VOLT[7];
+float VOLT[7];
 int16_t IT[3];
 char INPUTBUF[3];
 int InpVar;
@@ -50,11 +46,9 @@ ISR(PORTD_INT1_vect)													//Do something when PD1 encounters falling edge
 int main(void)
 {
 	init_CLK();
-//	init_stream(F_CPU);
 	init_TIMER();
 	init_DELAY();
 	init_ADC();
-//	init_DAC();
 	init_UART();
 	init_supply();
 	sei();
@@ -65,7 +59,6 @@ int main(void)
 	
 	PORTE_DIRSET = PIN4_bm;												//Timing debug pin
    
-
    
    uint8_t uart_data;
 
@@ -83,23 +76,7 @@ int main(void)
 				break;
 				
 			case(30):
-				//write_volt();											//Reads voltages and converts them to two uint8_t data packages (14 packages total)
-				write8_UART(1);
-				TIMEOUT();
-				write8_UART(2);
-				TIMEOUT();
-				write8_UART(3);
-				TIMEOUT();
-				write8_UART(4);
-				TIMEOUT();
-				write8_UART(5);
-				TIMEOUT();
-				write8_UART(6);
-				TIMEOUT();
-				write8_UART(7);
-				TIMEOUT();
-				write8_UART(8);
-				//read_voltages();
+				write_volt();											//Reads voltages and converts them to two uint8_t data packages (14 packages total)
 				break;
 				
 			case(40):
@@ -108,13 +85,11 @@ int main(void)
 				break;
 				
 			case(50):
-				fread_D0();												//read the frequency of Digital outputs
-				//write8_UART((uint8_t)D0_raw[0]);						//debug print to MATLAB
+				fread_DO();												//read the frequency of Digital outputs
 				break;
 				
 			case(60):
 				LPM_P_OFF();											//turn of both external and bat supply to LPM
-				//write8_UART((0xFF));
 				break;
 				
 			default:
