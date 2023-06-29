@@ -58,6 +58,17 @@ int main(void)
 	PORTA_OUTSET = PIN7_bm;												//Enable I'm alive LED
 	
 	PORTE_DIRSET = PIN4_bm;												//Timing debug pin
+
+	enum commands
+	{
+		SupBat,
+		SupExt,
+		SupOff,
+		IBat,
+		IExt,
+		RVolt,
+		RFrequency
+	};
    
    
    uint8_t uart_data;
@@ -67,34 +78,35 @@ int main(void)
 		uart_data = read_UART();
 		switch(uart_data)
 		{
-			case(10):
-				write_ext();											//Enables external supply + reads average current 1 sec + writes lbyte and then hbyte
+			case(SupBat):
+				supply_bat();											//Enables battery power supply and disables ext
 				break;
 				
-			case(20):
-				write_bat();											//Enables battery supply + reads average current 1 sec
+			case(SupExt):
+				supply_ext();											//Enables ext power supply and disables battery
 				break;
-				
-			case(30):
-				write_volt();											//Reads voltages and converts them to two uint8_t data packages (14 packages total)
-				break;
-				
-			case(40):
-				write8_UART((0xFF));									//Write error code max 16bit value as other functions cant reach 0xFFFF
-				write8_UART((0xFF));									//Place D0 function here
-				break;
-				
-			case(50):
-				fread_DO();												//read the frequency of Digital outputs
-				break;
-				
-			case(60):
+
+			case(SupOff):
 				LPM_P_OFF();											//turn of both external and bat supply to LPM
 				break;
 				
+			case(IBat):
+				read_supply_bat();										//measures Ibat in uA	
+				break;
+				
+			case(IExt):
+				read_supply_ext();										//measures IExt in uA
+				break;
+				
+			case(RVolt):
+				write_volt();											//Reads voltages and converts them to two uint8_t data packages (14 packages total)
+				break;
+				
+			case(RFrequency):
+				fread_DO();												//read the frequency of Digital outputs
+				break;
+				
 			default:
-				write8_UART((0xFF));									//Write error code max 16bit value as other functions cant reach 0xFFFF
-				write8_UART((0xFF));
 				break;	
 		}
 	}

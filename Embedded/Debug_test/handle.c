@@ -183,7 +183,7 @@ void read_voltages(void)
 
 	for(uint8_t i = 0; i < 8; i++)
 	{
-		VOLT[i] = ((VOLT[i]*ADC_VREF*ADC_LIN)/4095)-ADC_OFFSET;
+		VOLT[i] = ((VOLT[i]*ADC_VREF*ADC_LIN*4)/4095)-ADC_OFFSET;
 	}
 	
 	ADCA.INTFLAGS |= (0x0F);														//clear interrupt flags ADCA
@@ -225,11 +225,11 @@ void fread_DO(void)
 		ADCB.INTFLAGS |= (0x0F);													//clear interrupt flags ADCB
 	}
 	
-	for(uint32_t i = 0; i < SAMPLE_WINDOW; i++)
-	{
-		write8_UART((uint8_t)D0_raw[i]);											//debug print low byte
-		write8_UART((uint8_t)(D0_raw[i]>>8));										//debug print high byte
-	}
+//	for(uint32_t i = 0; i < SAMPLE_WINDOW; i++)
+//	{
+//		write8_UART((uint8_t)D0_raw[i]);											//debug print low byte
+//		write8_UART((uint8_t)(D0_raw[i]>>8));										//debug print high byte
+//	}
 	
 	ADCA.PRESCALER = ADC_PRESCALER_DIV32_gc;										//2MHz system clock use: ADCA clock speed to 62.5kHz
 	ADCB.PRESCALER = ADC_PRESCALER_DIV32_gc;										//2MHz system clock use: ADCB clock speed to 62.5kHz
@@ -301,31 +301,25 @@ void read_IT(void)
 	
 	TIMEOUT();
 	
-	IT[0] = (int16_t)ADCA.CH0.RES;													//Read I_external
-	IT[1] = (int16_t)ADCA.CH1.RES;													//Read I_battery
+	IT[0] = (float)ADCA.CH0.RES;													//Read I_external
+	IT[1] = (float)ADCA.CH1.RES;													//Read I_battery
 	
-	IT[2] = (int16_t)ADCB.CH0.RES;													//Read Temp_ambient
+	IT[2] = (float)ADCB.CH0.RES;													//Read Temp_ambient
 	
 	ADCA.INTFLAGS |= (0x03);														//clear interrupt flags ADCA
 	ADCB.INTFLAGS |= (0x01);														//clear interrupt flags ADCB
 }
 
-double calc_DACDATA(double dac_output)
-{
-	double dac_data;
-	dac_data = (dac_output*4095)/DAC_VREF;											//calculate dac_channel_data for desired DAC output voltage
-	return dac_data;
-}
 
-uint16_t read_supply_ext(void)
+void read_supply_ext(void)
 {
-	uint16_t current[10];
-	uint16_t average_I;
-	uint16_t sum = 0;																//Big enough sum of 10 12bit uints;
+	float current[10];
+	float average_I;
+	float sum = 0;																	//Big enough sum of 10 12bit uints;
 	
-	PORTB_OUTSET = PIN2_bm;															//supply bat
+	PORTB_OUTSET = PIN2_bm;															//supply ext 
 	TIMEOUT();
-	PORTB_OUTCLR = PIN3_bm;															//disable ext
+	PORTB_OUTCLR = PIN3_bm;															//disable bat 
 	TIMEOUT();
 	
 	for(int i = 0; i < 10; i++)														//Get 10 samples over 1 second
@@ -337,51 +331,16 @@ uint16_t read_supply_ext(void)
 	
 	for(int i = 0; i < 10; i++)
 	{
-		sum += current[i];
+		sum += current[i];															//Calculate sum of ADC res
 	}
 	
-	average_I = sum/10;
+	average_I = sum/10;																//Calculate average ADC res
+	average_I = (average_I*ADC_VREF*ADC_LIN)-ADC_OFFSET;							//Calculate ADC voltage
+	average_I = (average_I/(165))*1000000;											//Convert voltage to current in uA
 	
-	return average_I;
+	writeF_UART(average_I);															//Return current in uA
 }
 
-void write_bat(void)
-{
-	uint16_t I_bat;
-	uint16_t bit_test;
-	uint8_t hbyte;																	//High 8 bits I_bat
-	uint8_t lbyte;																	//Low 8 bits I_bat
-	
-	I_bat = read_supply_bat();														//Enables battery supply and reads the average current
-	lbyte = I_bat&(0xFF);															//Check for set bits lower byte
-	
-	write8_UART(lbyte);																//Send lower byte
-	
-	bit_test = I_bat&(0xFF00);														//test 8 set bits high byte
-	bit_test >>= 8;																	//Bit shift high byte to low byte register
-	hbyte = (uint8_t)bit_test;														//typecast to 1 register
-	
-	write8_UART(hbyte);																//Send high byte											
-}
-
-void write_ext(void)
-{
-	uint16_t I_ext;
-	uint16_t bit_test;
-	uint8_t hbyte;																	//High 8 bits I_bat
-	uint8_t lbyte;																	//Low 8 bits I_bat
-	
-	I_ext = read_supply_ext();														//Enables battery supply and reads the average current
-	lbyte = I_ext&(0xFF);															//Check for set bits lower byte
-	
-	write8_UART(lbyte);																//Send lower byte
-	
-	bit_test = I_ext&(0xFF00);														//test 8 set bits high byte
-	bit_test >>= 8;																	//Bit shift high byte to low byte register
-	hbyte = (uint8_t)bit_test;														//typecast to 1 register
-	
-	write8_UART(hbyte);																//Send high byte
-}
 
 void write_volt(void)
 {
@@ -391,18 +350,17 @@ void write_volt(void)
 	{
 		writeF_UART(VOLT[i]);														//Write voltages to MATLAB app
 	}
-	
 }
 
-uint16_t read_supply_bat(void)
+void read_supply_bat(void)
 {
-	uint16_t current[10];
-	uint16_t average_I;
-	uint16_t sum = 0;																//Big enough sum of 10 12bit uints;
+	float current[10];
+	float average_I;
+	float sum = 0;																	//Big enough sum of 10 12bit uints;
 	
-	PORTB_OUTSET = PIN3_bm;															//enable ext
+	PORTB_OUTSET = PIN3_bm;															//enable bat
 	TIMEOUT();
-	PORTB_OUTCLR = PIN2_bm;															//disable bat
+	PORTB_OUTCLR = PIN2_bm;															//disable ext 
 	TIMEOUT();
 	
 	for(int i = 0; i < 10; i++)														//Get 10 samples over 1 second
@@ -417,9 +375,11 @@ uint16_t read_supply_bat(void)
 		sum += current[i];
 	}
 	
-	average_I = sum/10;
+	average_I = sum/10;																//Calculate average ADC res
+	average_I = (average_I*ADC_VREF*ADC_LIN)-ADC_OFFSET;							//Calculate ADC voltage
+	average_I = (average_I/(500))*1000000;										//Convert voltage to current in uA
 	
-	return average_I;
+	writeF_UART(average_I);															//Return current in uA
 }
 
 void TIMEOUT(void)
@@ -432,26 +392,11 @@ void TIMEOUT(void)
 	stop_DELAY();
 }
 
-#ifndef dis_dac
-void supply_bat(void)
-{
-	DACB.CH0DATA = calc_DACDATA(1.00);												//Set DAC channel 0 to 1V
-	TIMEOUT();
-	DACB.CH1DATA = calc_DACDATA(0.00);												//Set DAC channel 1 to 0V
-}
-
-void supply_ext(void)
-{
-	DACB.CH1DATA = calc_DACDATA(1.00);												//Set DAC channel 1 to 1V
-	TIMEOUT();
-	DACB.CH0DATA = calc_DACDATA(0.00);												//Set DAC channel 0 to 0V
-}
-#endif
 
 void LPM_P_OFF(void)
 {
-	PORTB_OUTCLR = PIN2_bm;															//turn battery supply off
-	PORTB_OUTCLR = PIN3_bm;															//turn external supply off 
+	PORTB_OUTCLR = PIN2_bm;															//turn external supply off
+	PORTB_OUTCLR = PIN3_bm;															//turn battery supply off 
 }
 
 void writeF_UART(float data)
@@ -462,4 +407,21 @@ void writeF_UART(float data)
 	write8_UART(sendarray[1]);
 	write8_UART(sendarray[2]);
 	write8_UART(sendarray[3]);
+}
+
+
+void supply_ext(void)
+{
+	PORTB_OUTSET = PIN2_bm;															//supply ext
+	TIMEOUT();
+	PORTB_OUTCLR = PIN3_bm;															//disable bat
+	TIMEOUT();
+}
+
+void supply_bat(void)
+{
+	PORTB_OUTSET = PIN3_bm;															//disable bat
+	TIMEOUT();
+	PORTB_OUTCLR = PIN2_bm;															//supply ext
+	TIMEOUT();
 }
