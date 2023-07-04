@@ -78,31 +78,31 @@ int main(void)
 		uart_data = read_UART();
 		switch(uart_data)
 		{
-			case(SupBat):
+			case(SupBat):			//0
 				supply_bat();											//Enables battery power supply and disables ext
 				break;
 				
-			case(SupExt):
+			case(SupExt):			//1
 				supply_ext();											//Enables ext power supply and disables battery
 				break;
 
-			case(SupOff):
+			case(SupOff):			//2
 				LPM_P_OFF();											//turn of both external and bat supply to LPM
 				break;
 				
-			case(IBat):
+			case(IBat):				//3
 				read_supply_bat();										//measures Ibat in uA	
 				break;
 				
-			case(IExt):
+			case(IExt):				//4
 				read_supply_ext();										//measures IExt in uA
 				break;
 				
-			case(RVolt):
+			case(RVolt):			//5
 				write_volt();											//Reads voltages and converts them to two uint8_t data packages (14 packages total)
 				break;
 				
-			case(RFrequency):
+			case(RFrequency):		//6
 				fread_DO();												//read the frequency of Digital outputs
 				break;
 				
