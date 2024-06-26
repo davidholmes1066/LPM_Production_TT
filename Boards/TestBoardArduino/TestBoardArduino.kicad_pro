@@ -37,9 +37,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.0,
-          "height": 2.6,
-          "width": 1.6
+          "drill": 0.762,
+          "height": 1.524,
+          "width": 1.524
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -48,8 +48,7 @@
         "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
-          "45_degree_only": false,
-          "min_clearance": 0.508
+          "min_clearance": 0.2
         }
       },
       "diff_pair_dimensions": [
@@ -77,7 +76,7 @@
         "extra_footprint": "warning",
         "footprint": "error",
         "footprint_symbol_mismatch": "warning",
-        "footprint_type_mismatch": "error",
+        "footprint_type_mismatch": "ignore",
         "hole_clearance": "error",
         "hole_near_hole": "error",
         "invalid_outline": "error",
@@ -93,7 +92,7 @@
         "missing_footprint": "warning",
         "net_conflict": "warning",
         "npth_inside_courtyard": "ignore",
-        "padstack": "error",
+        "padstack": "warning",
         "pth_inside_courtyard": "ignore",
         "shorting_items": "error",
         "silk_edge_clearance": "warning",
@@ -115,8 +114,6 @@
         "zones_intersect": "error"
       },
       "rules": {
-        "allow_blind_buried_vias": false,
-        "allow_microvias": false,
         "max_error": 0.005,
         "min_clearance": 0.0,
         "min_connection": 0.0,
@@ -130,9 +127,9 @@
         "min_text_height": 0.8,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.3,
-        "min_track_width": 0.2,
-        "min_via_annular_width": 0.05,
-        "min_via_diameter": 0.4,
+        "min_track_width": 0.0,
+        "min_via_annular_width": 0.1,
+        "min_via_diameter": 0.5,
         "solder_mask_clearance": 0.0,
         "solder_mask_min_width": 0.0,
         "solder_mask_to_copper_clearance": 0.0,
@@ -182,7 +179,8 @@
         }
       ],
       "track_widths": [
-        0.0
+        0.0,
+        1.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -216,8 +214,7 @@
           "drill": 0.0
         }
       ],
-      "zones_allow_external_fillets": false,
-      "zones_use_no_outline": true
+      "zones_allow_external_fillets": false
     },
     "ipc2581": {
       "dist": "",
@@ -449,7 +446,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "Bed_of_nails.kicad_pro",
+    "filename": "TestBoardArduino.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -484,10 +481,10 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "Production/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "Bed_of_nails.step",
+      "step": "",
       "svg": "",
       "vrml": ""
     },
@@ -580,18 +577,8 @@
       "version": 1
     },
     "net_format_name": "",
-    "ngspice": {
-      "fix_include_paths": true,
-      "fix_passive_vals": false,
-      "meta": {
-        "version": 0
-      },
-      "model_mode": 0,
-      "workbook_filename": ""
-    },
     "page_layout_descr_file": "",
     "plot_directory": "",
-    "spice_adjust_passive_values": false,
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
     "spice_model_current_sheet_as_root": true,
@@ -603,8 +590,24 @@
   },
   "sheets": [
     [
-      "e63e39d7-6ac0-4ffd-8aa3-1841a4541b55",
-      ""
+      "569848bc-480b-4cfe-96a1-7f07584b7f26",
+      "Root"
+    ],
+    [
+      "235a9a2d-e016-4bfe-a001-73ea1f112ba7",
+      "BoardSupply"
+    ],
+    [
+      "cf6ded4f-36cd-4b46-bf8f-208e0333a6e4",
+      "Connectors"
+    ],
+    [
+      "b0b16144-5c7d-4353-a987-03fc6ef5c3fe",
+      "PowerSupplies"
+    ],
+    [
+      "5b74e9b4-4966-4ee4-8695-f32070f9184c",
+      "Digital"
     ]
   ],
   "text_variables": {}

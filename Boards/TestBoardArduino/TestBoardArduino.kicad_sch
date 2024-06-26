@@ -1,0 +1,165 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "569848bc-480b-4cfe-96a1-7f07584b7f26")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 49.53 76.2)
+		(size 54.61 31.75)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "235a9a2d-e016-4bfe-a001-73ea1f112ba7")
+		(property "Sheetname" "BoardSupply"
+			(at 49.53 75.4884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "BoardSupply.kicad_sch"
+			(at 49.53 108.5346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "TestBoardArduino"
+				(path "/569848bc-480b-4cfe-96a1-7f07584b7f26"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 87.63 26.924)
+		(size 43.688 29.972)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5b74e9b4-4966-4ee4-8695-f32070f9184c")
+		(property "Sheetname" "Digital"
+			(at 87.63 26.2124 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Digital.kicad_sch"
+			(at 87.63 57.4806 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "TestBoardArduino"
+				(path "/569848bc-480b-4cfe-96a1-7f07584b7f26"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 98.298 128.016)
+		(size 48.514 21.082)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "b0b16144-5c7d-4353-a987-03fc6ef5c3fe")
+		(property "Sheetname" "PowerSupplies"
+			(at 98.298 127.3044 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "PS.kicad_sch"
+			(at 98.298 149.6826 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "TestBoardArduino"
+				(path "/569848bc-480b-4cfe-96a1-7f07584b7f26"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 146.558 80.264)
+		(size 35.56 23.368)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "cf6ded4f-36cd-4b46-bf8f-208e0333a6e4")
+		(property "Sheetname" "Connectors"
+			(at 146.558 79.5524 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Connectors.kicad_sch"
+			(at 146.558 104.2166 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "TestBoardArduino"
+				(path "/569848bc-480b-4cfe-96a1-7f07584b7f26"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)
